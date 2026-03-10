@@ -8,7 +8,7 @@ CREATE TYPE "SkillCategory" AS ENUM ('LANGUAGE', 'FRAMEWORK', 'TOOL', 'DATABASE'
 CREATE TYPE "AvatarStyle" AS ENUM ('GEOMETRIC', 'ABSTRACT');
 
 -- CreateEnum
-CREATE TYPE "DeveloperStatus" AS ENUM ('AVAILABLE', 'BUSY', 'UNAVAILABLE');
+CREATE TYPE "Developertatus" AS ENUM ('AVAILABLE', 'BUSY', 'UNAVAILABLE');
 
 -- CreateTable
 CREATE TABLE "Developer" (
@@ -25,7 +25,7 @@ CREATE TABLE "Developer" (
     "experienceYears" INTEGER NOT NULL,
     "avatarStyle" "AvatarStyle" NOT NULL,
     "avatarSeed" TEXT NOT NULL,
-    "status" "DeveloperStatus" NOT NULL,
+    "status" "Developertatus" NOT NULL,
     "remoteOk" BOOLEAN NOT NULL DEFAULT true,
     "githubUrl" TEXT,
     "linkedinUrl" TEXT,
@@ -48,11 +48,11 @@ CREATE TABLE "Skill" (
 );
 
 -- CreateTable
-CREATE TABLE "DeveloperSkill" (
+CREATE TABLE "Developerkill" (
     "developerId" TEXT NOT NULL,
     "skillId" TEXT NOT NULL,
 
-    CONSTRAINT "DeveloperSkill_pkey" PRIMARY KEY ("developerId","skillId")
+    CONSTRAINT "Developerkill_pkey" PRIMARY KEY ("developerId","skillId")
 );
 
 -- CreateTable
@@ -79,10 +79,10 @@ CREATE UNIQUE INDEX "Developer_username_key" ON "Developer"("username");
 CREATE UNIQUE INDEX "Skill_name_key" ON "Skill"("name");
 
 -- AddForeignKey
-ALTER TABLE "DeveloperSkill" ADD CONSTRAINT "DeveloperSkill_developerId_fkey" FOREIGN KEY ("developerId") REFERENCES "Developer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Developerkill" ADD CONSTRAINT "Developerkill_developerId_fkey" FOREIGN KEY ("developerId") REFERENCES "Developer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DeveloperSkill" ADD CONSTRAINT "DeveloperSkill_skillId_fkey" FOREIGN KEY ("skillId") REFERENCES "Skill"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Developerkill" ADD CONSTRAINT "Developerkill_skillId_fkey" FOREIGN KEY ("skillId") REFERENCES "Skill"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD CONSTRAINT "Project_developerId_fkey" FOREIGN KEY ("developerId") REFERENCES "Developer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
