@@ -28,7 +28,7 @@ enum AvatarStyle {
   ABSTRACT
 }
 
-enum DeveloperStatus {
+enum Developertatus {
   AVAILABLE
   BUSY
   UNAVAILABLE
@@ -53,7 +53,7 @@ model Developer {
   avatarStyle     AvatarStyle
   avatarSeed      String
 
-  status          DeveloperStatus
+  status          Developertatus
   remoteOk        Boolean  @default(true)
 
   githubUrl       String?
@@ -68,7 +68,7 @@ model Developer {
 
   projects        Project[]
 
-  skills          DeveloperSkill[]
+  skills          Developerkill[]
 }
 
 model Skill {
@@ -76,10 +76,10 @@ model Skill {
   name      String        @unique
   category  SkillCategory
 
-  developers DeveloperSkill[]
+  Developer Developerkill[]
 }
 
-model DeveloperSkill {
+model Developerkill {
   developerId String
   skillId     String
 
