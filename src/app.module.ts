@@ -8,14 +8,14 @@ import { SkillModule } from './modules/skill/skill.module';
 import { ProjectModule } from './modules/project/project.module';
 
 @Module({
-  imports: [
-    PrismaModule,
-    AuthModule,
-    DeveloperModule,
-    SkillModule,
-    ProjectModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+	imports: [
+		PrismaModule,
+		AuthModule,
+		DeveloperModule,
+		SkillModule,
+		ProjectModule,
+	],
+	controllers: [AppController],
+	providers: [AppService],
 })
 export class AppModule {}
