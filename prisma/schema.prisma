@@ -28,7 +28,7 @@ enum AvatarStyle {
   ABSTRACT
 }
 
-enum Developertatus {
+enum DeveloperStatus {
   AVAILABLE
   BUSY
   UNAVAILABLE
@@ -53,7 +53,7 @@ model Developer {
   avatarStyle     AvatarStyle
   avatarSeed      String
 
-  status          Developertatus
+  status          DeveloperStatus
   remoteOk        Boolean  @default(true)
 
   githubUrl       String?
