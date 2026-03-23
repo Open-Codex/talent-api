@@ -1,24 +1,66 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { QueryDeveloperDto } from './dto/query-developers.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DeveloperService {
 	constructor(private prisma: PrismaService) {}
 
 	async findAll(query: QueryDeveloperDto) {
-		const { page = 1, limit = 10 } = query;
+		const { page = 1, limit = 10, stack, location, seniority, status } = query;
 		const skip = (page - 1) * limit;
+		const where: Prisma.DeveloperWhereInput = {};
+
+		// Filters
+		if (location) {
+			where.location = {
+				contains: location,
+				mode: 'insensitive',
+			};
+		}
+
+		if (seniority) {
+			where.seniority = seniority;
+		}
+
+		if (status) {
+			where.status = status;
+		}
+
+		// Stack Filter
+		if (stack) {
+			const skillsArray = stack.split(',').map((s) => s.trim());
+
+			where.skills = {
+				some: {
+					skill: {
+						name: {
+							in: skillsArray,
+							mode: 'insensitive',
+						},
+					},
+				},
+			};
+		}
 
 		const [data, total] = await this.prisma.$transaction([
 			this.prisma.developer.findMany({
+				where,
 				skip,
 				take: limit,
 				orderBy: {
 					createdAt: 'desc',
 				},
+				include: {
+					skills: {
+						include: {
+							skill: true,
+						},
+					},
+				},
 			}),
-			this.prisma.developer.count(),
+			this.prisma.developer.count({ where }),
 		]);
 
 		return {
