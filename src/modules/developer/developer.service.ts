@@ -53,10 +53,28 @@ export class DeveloperService {
 				orderBy: {
 					createdAt: 'desc',
 				},
-				include: {
+				select: {
+					id: true,
+					name: true,
+					username: true,
+					seniority: true,
+					role: true,
+					bio: true,
+					location: true,
+					experienceYears: true,
+					avatarStyle: true,
+					avatarSeed: true,
+					status: true,
+					remoteOk: true,
+					featured: true,
+
 					skills: {
-						include: {
-							skill: true,
+						select: {
+							skill: {
+								select: {
+									name: true,
+								},
+							},
 						},
 					},
 				},

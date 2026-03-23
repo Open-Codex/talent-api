@@ -69,6 +69,11 @@ model Developer {
   projects        Project[]
 
   skills          Developerkill[]
+
+  @@index([location])
+  @@index([seniority])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model Skill {
@@ -77,6 +82,8 @@ model Skill {
   category  SkillCategory
 
   Developer Developerkill[]
+
+  @@index([name])
 }
 
 model Developerkill {
