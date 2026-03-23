@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { QueryDeveloperDto } from './dto/query-developers.dto';
 import { Prisma } from '@prisma/client';
+import { UpdateDeveloperDto } from './dto/update-developer.dto';
 
 @Injectable()
 export class DeveloperService {
@@ -71,5 +72,14 @@ export class DeveloperService {
 				lastPage: Math.ceil(total / limit),
 			},
 		};
+	}
+
+	async updateProfile(userId: string, dto: UpdateDeveloperDto) {
+		const updated = await this.prisma.developer.update({
+			where: { id: userId },
+			data: dto,
+		});
+
+		return updated;
 	}
 }
