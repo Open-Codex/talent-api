@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { QueryDeveloperDto } from './dto/query-developers.dto';
 import { Prisma } from '@prisma/client';
@@ -72,6 +72,26 @@ export class DeveloperService {
 				lastPage: Math.ceil(total / limit),
 			},
 		};
+	}
+
+	async findByUsername(username: string) {
+		const developer = await this.prisma.developer.findUnique({
+			where: { username },
+			include: {
+				skills: {
+					include: {
+						skill: true,
+					},
+				},
+				projects: true,
+			},
+		});
+
+		if (!developer) {
+			throw new NotFoundException('Developer not found');
+		}
+
+		return developer;
 	}
 
 	async updateProfile(userId: string, dto: UpdateDeveloperDto) {

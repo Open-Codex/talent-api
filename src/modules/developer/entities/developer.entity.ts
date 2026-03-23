@@ -1,4 +1,15 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
+
+class SkillItem {
+	@Expose()
+	name!: string;
+}
+
+class DeveloperSkillEntity {
+	@Expose()
+	@Type(() => SkillItem)
+	skill!: SkillItem;
+}
 
 export class DeveloperEntity {
 	@Expose()
@@ -65,6 +76,13 @@ export class DeveloperEntity {
 
 	@Expose()
 	updatedAt!: Date;
+
+	@Expose()
+	@Type(() => DeveloperSkillEntity)
+	skills!: DeveloperSkillEntity[];
+
+	@Expose()
+	projects!: any[];
 
 	constructor(partial: Partial<DeveloperEntity>) {
 		Object.assign(this, partial);

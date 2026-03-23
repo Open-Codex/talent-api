@@ -1,6 +1,11 @@
-import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { DeveloperService } from './developer.service';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import {
+	ApiTags,
+	ApiOperation,
+	ApiBearerAuth,
+	ApiResponse,
+} from '@nestjs/swagger';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
 import { DeveloperEntity } from './entities/developer.entity';
 import { Query } from '@nestjs/common';
@@ -19,6 +24,15 @@ export class DeveloperController {
 	@ApiOperation({ summary: 'List Developers' })
 	findAll(@Query() query: QueryDeveloperDto) {
 		return this.developerService.findAll(query);
+	}
+
+	@Get(':username')
+	@Serialize(DeveloperEntity)
+	@ApiOperation({ summary: 'Get Developer public profile' })
+	@ApiResponse({ status: 200, description: 'Developer profile' })
+	@ApiResponse({ status: 404, description: 'Developer not found' })
+	findByUsername(@Param('username') usernname: string) {
+		return this.developerService.findByUsername(usernname);
 	}
 
 	@Patch('me')
