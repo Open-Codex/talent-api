@@ -34,6 +34,11 @@ enum DeveloperStatus {
   UNAVAILABLE
 }
 
+enum UserRole {
+	USER
+	ADMIN
+}
+
 model Developer {
   id              String   @id @default(cuid())
   email           String   @unique
@@ -43,6 +48,7 @@ model Developer {
   username        String   @unique
   seniority       Seniority
   role            String
+  systemRole			UserRole @default(USER)
 
   bio             String?  @db.VarChar(500)
   readme          String?  @db.Text
@@ -68,7 +74,7 @@ model Developer {
 
   projects        Project[]
 
-  skills          Developerkill[]
+  skills          DeveloperSkill[]
 
   @@index([location])
   @@index([seniority])
@@ -81,12 +87,12 @@ model Skill {
   name      String        @unique
   category  SkillCategory
 
-  Developer Developerkill[]
+  Developer DeveloperSkill[]
 
   @@index([name])
 }
 
-model Developerkill {
+model DeveloperSkill {
   developerId String
   skillId     String
 
