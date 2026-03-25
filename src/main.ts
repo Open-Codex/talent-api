@@ -10,7 +10,16 @@ async function bootstrap() {
 	app.use(helmet());
 
 	app.enableCors({
-		origin: ['https://opencodex.app'],
+		origin: (origin, callback) => {
+			const allowedOrigins = ['https://opencodex.app'];
+
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				callback(new Error('Not allowed by CORS'));
+			}
+		},
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
 		credentials: true,
 	});
 
