@@ -26,6 +26,13 @@ export class DeveloperController {
 		return this.developerService.findAll(query);
 	}
 
+	@Get('featured')
+	@Serialize(DeveloperEntity)
+	@ApiOperation({ summary: 'Get featured developers' })
+	findFeatured(@Query('limit') limit?: string) {
+		return this.developerService.findFeatured(Number(limit) || 6);
+	}
+
 	@Get(':username')
 	@Serialize(DeveloperEntity)
 	@ApiOperation({ summary: 'Get Developer public profile' })
