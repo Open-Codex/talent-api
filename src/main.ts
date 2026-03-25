@@ -3,31 +3,39 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+//import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
-	const corsOptions: CorsOptions = {
-		origin: (
-			origin: string | undefined,
-			callback: (err: Error | null, allow?: boolean) => void,
-		) => {
-			const allowedOrigins = ['https://opencodex.app'];
+	/*      const corsOptions: CorsOptions = {
+                origin: (
+                        origin: string | undefined,
+                        callback: (err: Error | null, allow?: boolean) => void,
+                ) => {
+                        const allowedOrigins = ['https://opencodex.app'];
 
-			if (!origin || allowedOrigins.includes(origin)) {
-				callback(null, true);
-			} else {
-				callback(new Error('Not allowed by CORS'));
-			}
-		},
-		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+                        if (!origin || allowedOrigins.includes(origin)) {
+                                callback(null, true);
+                        } else {
+                                callback(new Error('Not allowed by CORS'));
+                        }
+                },
+                methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+                credentials: true,
+        };*/
+
+	app.enableCors({
+		origin: 'https://opencodex.app',
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
 		credentials: true,
-	};
+	});
 
-	app.use(helmet());
-
-	app.enableCors(corsOptions);
+	app.use(
+		helmet({
+			crossOriginResourcePolicy: { policy: 'cross-origin' },
+		}),
+	);
 	/**
 	 * Api Prefix
 	 */
@@ -58,6 +66,6 @@ async function bootstrap() {
 
 	SwaggerModule.setup('api/docs', app, document);
 
-	await app.listen(process.env.PORT ?? 3000);
+	await app.listen(process.env.PORT ?? 5000);
 }
 bootstrap();
