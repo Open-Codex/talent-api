@@ -10,7 +10,7 @@ async function bootstrap() {
 	app.use(helmet());
 
 	app.enableCors({
-		origin: true, //['https://opencodex.app']
+		origin: ['https://opencodex.app'],
 		credentials: true,
 	});
 
