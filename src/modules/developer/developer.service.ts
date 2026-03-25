@@ -9,7 +9,15 @@ export class DeveloperService {
 	constructor(private prisma: PrismaService) {}
 
 	async findAll(query: QueryDeveloperDto) {
-		const { page = 1, limit = 10, stack, location, seniority, status } = query;
+		const {
+			page = 1,
+			limit = 10,
+			stack,
+			location,
+			seniority,
+			status,
+			role,
+		} = query;
 		const skip = (page - 1) * limit;
 		const where: Prisma.DeveloperWhereInput = {};
 
@@ -42,6 +50,13 @@ export class DeveloperService {
 						},
 					},
 				},
+			};
+		}
+
+		if (role) {
+			where.role = {
+				contains: role,
+				mode: 'insensitive',
 			};
 		}
 
