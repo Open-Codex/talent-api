@@ -79,6 +79,7 @@ model Developer {
   @@index([location])
   @@index([seniority])
   @@index([status])
+  @@index([role])
   @@index([createdAt])
 }
 

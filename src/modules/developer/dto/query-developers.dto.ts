@@ -31,4 +31,8 @@ export class QueryDeveloperDto {
 	@IsOptional()
 	@IsEnum(DeveloperStatus)
 	status?: DeveloperStatus;
+
+	@IsOptional()
+	@IsString()
+	role?: string;
 }
