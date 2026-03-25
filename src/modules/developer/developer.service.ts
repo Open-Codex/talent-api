@@ -112,6 +112,45 @@ export class DeveloperService {
 		return developer;
 	}
 
+	async findFeatured(limit = 6) {
+		const data = await this.prisma.developer.findMany({
+			where: {
+				featured: true,
+			},
+			take: limit,
+			orderBy: {
+				createdAt: 'desc',
+			},
+			select: {
+				id: true,
+				name: true,
+				username: true,
+				seniority: true,
+				role: true,
+				bio: true,
+				location: true,
+				experienceYears: true,
+				avatarStyle: true,
+				avatarSeed: true,
+				status: true,
+				remoteOk: true,
+				featured: true,
+
+				skills: {
+					select: {
+						skill: {
+							select: {
+								name: true,
+							},
+						},
+					},
+				},
+			},
+		});
+
+		return data;
+	}
+
 	async updateProfile(userId: string, dto: UpdateDeveloperDto) {
 		const updated = await this.prisma.developer.update({
 			where: { id: userId },
