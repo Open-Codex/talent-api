@@ -3,14 +3,16 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
-	app.use(helmet());
-
-	app.enableCors({
-		origin: (origin, callback) => {
+	const corsOptions: CorsOptions = {
+		origin: (
+			origin: string | undefined,
+			callback: (err: Error | null, allow?: boolean) => void,
+		) => {
 			const allowedOrigins = ['https://opencodex.app'];
 
 			if (!origin || allowedOrigins.includes(origin)) {
@@ -19,10 +21,13 @@ async function bootstrap() {
 				callback(new Error('Not allowed by CORS'));
 			}
 		},
-		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 		credentials: true,
-	});
+	};
 
+	app.use(helmet());
+
+	app.enableCors(corsOptions);
 	/**
 	 * Api Prefix
 	 */
