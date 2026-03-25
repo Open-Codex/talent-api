@@ -1,98 +1,103 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# OpenCodex Talent API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<div align="center">
+  <h3>Powered by NestJS and Prisma</h3>
+  <p>The robust, type-safe, and highly scalable REST API driving the OpenCodex Talent platform.</p>
+</div>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🎯 Overview
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This repository folder (`/nestjs`) contains the core backend services. It is responsible for user authentication, strict data validation, Role-Based Access Control (RBAC), and persisting developer portfolios securely in a PostgreSQL database using Prisma ORM.
 
-## Project setup
+## 💡 Why NestJS & Prisma?
 
-```bash
-$ npm install
-```
+NestJS was strictly chosen over Express to enforce an **opinionated, scalable architecture** capable of handling open-source contributions seamlessly. Its Angular-like modularity ensures clear segregation of responsibilities, while Prisma provides end-to-end type safety directly mapped to our PostgreSQL schema.
 
-## Compile and run the project
+## 🛠 Tech & Architecture
 
-```bash
-# development
-$ npm run start
+- **Framework:** NestJS 10+
+- **Database:** PostgreSQL
+- **ORM:** Prisma
+- **Auth:** Passport & `@nestjs/jwt` strategies
+- **API Documentation:** Swagger / OpenAPI
+- **Validation:** Explicit DTOs with `class-validator` and `class-transformer`
 
-# watch mode
-$ npm run start:dev
+### Core Modules
+1. **AuthModule**: Manages user registration, login, JWT issuance, and payload validation.
+2. **DeveloperModule**: Handles searching developers (with strict `limit` and `page` filters), and updating profiles (seniority, role, avatars, availability).
+3. **ProjectModule**: Full CRUD for developer portfolios.
+4. **SkillModule**: Central catalogue for assigning skills to developers.
 
-# production mode
-$ npm run start:prod
-```
+## 🔒 Security & Authorization
 
-## Run tests
+All secure endpoints utilize custom guards (`JwtAuthGuard`). 
+Furthermore, the platform enforces **RBAC (Role-Based Access Control)** using Prisma enums (`USER` vs `ADMIN`). Only users with the `ADMIN` systemRole property encoded in their JWT can access admin-specific backend mutations (e.g., creating universal skills).
 
-```bash
-# unit tests
-$ npm run test
+## 🚀 Getting Started
 
-# e2e tests
-$ npm run test:e2e
+### Prerequisites
+- **Node.js** v18+
+- **Docker** (recommended for running PostgreSQL locally)
+- **PostgreSQL** (if not using Docker)
 
-# test coverage
-$ npm run test:cov
-```
+### Installation
 
-## Deployment
+1. **Navigate to the API folder**
+   ```bash
+   cd nestjs
+   ```
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+3. **Environment Setup**
+   Create a `.env` file in the `nestjs` directory:
+   ```env
+   # Example PostgreSQL Connection
+   DATABASE_URL="postgresql://postgres:password@localhost:5432/opencodex_talent?schema=public"
+   
+   # JWT Secret
+   JWT_SECRET="super-secret-key-change-me"
+   
+   # Port
+   PORT=5000
+   ```
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+4. **Initialize Prisma (Database Sync)**
+   Ensure your Postgres database is running, then deploy the schema:
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+5. **Start the API Server**
+   ```bash
+   npm run start:dev
+   ```
 
-## Resources
+   The server will run at `http://localhost:5000/api/v1`.
 
-Check out a few resources that may come in handy when working with NestJS:
+## 📚 API Documentation (Swagger)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+A fully interactive OpenAPI specification is bundled automatically. 
 
-## Support
+With the development server running, navigate to:
+**👉 `http://localhost:5000/api/docs`**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+You can visually explore all available endpoints, DTO schemas, and even emit test requests directly from the UI.
 
-## Stay in touch
+## 📦 Database Schema Details
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+The core entities are represented in Prisma as follows:
 
-## License
+- **Users**: Authentication entity containing credentials and System Roles.
+- **DeveloperProfiles**: Holds the actual visible information (`username`, `bio`, `seniority`, `role`, `location`, `avatarSeed`).
+- **Projects**: Belongs to a single developer, showcasing their repository (`repoUrl`) and live builds (`productionUrl`).
+- **Skills**: Global lookup table linked through a many-to-many relationship with DeveloperProfiles.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+*Built for the OpenCodex community.*
