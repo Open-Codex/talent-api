@@ -88,6 +88,7 @@ export class DeveloperService {
 							skill: {
 								select: {
 									name: true,
+									category: true,
 								},
 							},
 						},
@@ -156,6 +157,7 @@ export class DeveloperService {
 						skill: {
 							select: {
 								name: true,
+								category: true,
 							},
 						},
 					},
