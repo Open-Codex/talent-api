@@ -13,7 +13,12 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import {
+	ApiTags,
+	ApiBearerAuth,
+	ApiOperation,
+	ApiResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Project')
 @ApiBearerAuth()
@@ -32,6 +37,14 @@ export class ProjectController {
 	@ApiOperation({ summary: 'Get my projects' })
 	findMyProjects(@CurrentUser() user: any) {
 		return this.projectService.findMyProjects(user.userId);
+	}
+
+	@Get(':id')
+	@ApiOperation({ summary: 'Get Project public profile' })
+	@ApiResponse({ status: 200, description: 'Project profile' })
+	@ApiResponse({ status: 404, description: 'Project not found' })
+	findByProjectId(@Param('id') id: string) {
+		return this.projectService.findByProjectId(id);
 	}
 
 	@Patch(':id')
