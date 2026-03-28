@@ -6,7 +6,7 @@ import {
 	Min,
 	IsEnum,
 } from 'class-validator';
-import { Seniority } from '@prisma/client';
+import { Seniority, AvatarStyle } from '@prisma/client';
 
 export class UpdateDeveloperDto {
 	@IsOptional()
@@ -37,6 +37,10 @@ export class UpdateDeveloperDto {
 	@IsInt()
 	@Min(0)
 	experienceYears?: number;
+
+	@IsOptional()
+	@IsEnum(AvatarStyle)
+	avatarStyle?: AvatarStyle;
 
 	@IsOptional()
 	@IsBoolean()
