@@ -60,7 +60,7 @@ export class DeveloperService {
 			};
 		}
 
-		const [data, total] = await this.prisma.$transaction([
+		const [data, total] = await Promise.all([
 			this.prisma.developer.findMany({
 				where,
 				skip,
