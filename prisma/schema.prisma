@@ -76,6 +76,8 @@ model Developer {
 
   skills          DeveloperSkill[]
 
+  cvs							Cv[]
+
   @@index([location])
   @@index([seniority])
   @@index([status])
@@ -117,4 +119,18 @@ model Project {
   updatedAt      DateTime  @updatedAt
 
   developer      Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+}
+
+model Cv {
+	id             String		@id @default(cuid())
+	developerId		 String
+
+	title					 String
+	content				 String
+	isDefault			 Boolean  @default(false)
+
+	createdAt			 DateTime @default(now())
+	updatedAt			 DateTime @updatedAt
+
+	developer 		 Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
 }
