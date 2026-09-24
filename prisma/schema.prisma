@@ -40,7 +40,7 @@ enum UserRole {
 }
 
 model Developer {
-  id              String   @id @default(cuid())
+  id              String   @id @default(uuid(7)) @db.Uuid
   email           String   @unique
   passwordHash    String
 
@@ -84,7 +84,7 @@ model Developer {
 }
 
 model Skill {
-  id        String        @id @default(cuid())
+  id        String        @id @default(uuid(7)) @db.Uuid
   name      String        @unique
   category  SkillCategory
 
@@ -94,8 +94,8 @@ model Skill {
 }
 
 model DeveloperSkill {
-  developerId String
-  skillId     String
+  developerId String @db.Uuid
+  skillId     String @db.Uuid
 
   developer   Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
   skill       Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
@@ -104,8 +104,8 @@ model DeveloperSkill {
 }
 
 model Project {
-  id             String    @id @default(cuid())
-  developerId    String
+  id             String    @id @default(uuid(7)) @db.Uuid
+  developerId    String    @db.Uuid
 
   title          String
   description    String
@@ -118,3 +118,20 @@ model Project {
 
   developer      Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
 }
+<<<<<<< Updated upstream
+=======
+
+model Cv {
+	id             String		@id @default(uuid(7)) @db.Uuid
+	developerId		 String   @db.Uuid
+
+	title					 String
+	content				 String
+	isDefault			 Boolean  @default(false)
+
+	createdAt			 DateTime @default(now())
+	updatedAt			 DateTime @updatedAt
+
+	developer 		 Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+}
+>>>>>>> Stashed changes
