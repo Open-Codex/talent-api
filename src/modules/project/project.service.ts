@@ -27,6 +27,18 @@ export class ProjectService {
 		});
 	}
 
+	async findByProjectId(id: string) {
+		const project = await this.prisma.project.findUnique({
+			where: { id },
+		});
+
+		if (!project) {
+			throw new NotFoundException('Project not found');
+		}
+
+		return project;
+	}
+
 	async updateProject(
 		userId: string,
 		projectId: string,

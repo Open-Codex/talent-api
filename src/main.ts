@@ -26,7 +26,7 @@ async function bootstrap() {
         };*/
 
 	app.enableCors({
-		origin: 'https://opencodex.app',
+		origin: ['https://opencodex.app', 'https://cv.opencodex.app'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
 		credentials: true,
 	});

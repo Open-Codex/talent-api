@@ -3,6 +3,9 @@ import { Exclude, Expose, Type } from 'class-transformer';
 class SkillItem {
 	@Expose()
 	name!: string;
+
+	@Expose()
+	category!: string;
 }
 
 class DeveloperSkillEntity {
